@@ -10,15 +10,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Table(name = "student")
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class Student {
@@ -30,11 +30,11 @@ public class Student {
 	@Column(name="first_name", nullable = false)
 	private String firstName;
 	
-	@Column(name="last_namne",nullable = false)
+	@Column(name="last_name",nullable = false)
 	private String lastName;
 	
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Temporal(TemporalType.DATE)
+    //@Temporal(TemporalType.DATE)
     @Column(name = "birth_of_date")
     private Date birthOfDay;
 }
