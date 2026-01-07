@@ -3,9 +3,17 @@ package com.tuba.starter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@EntityScan(basePackages = "com.tuba")
-@SpringBootApplication // bu anotasyonun olduğu sınıf starter olur.İsim farklı olabilir ama starter yazılması kolaylık olur
+
+@SpringBootApplication
+@EntityScan(basePackages= {"com.tuba"}) //Projedeki tum entityleri gormesi icin
+@ComponentScan(basePackages = "com.tuba")//Rest controller, controller,service,
+											//repository gibi anotasyonlarinin 
+											//spring konteynirda bean'ninin 
+												//olusmasini saglar 
+@EnableJpaRepositories(basePackages = "com.tuba") // Jpa Repo.lari projede aktif etmek icin
 public class SpringDataJpaApplication {
 
 	public static void main(String[] args) {
