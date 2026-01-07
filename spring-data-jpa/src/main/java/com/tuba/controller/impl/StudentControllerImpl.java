@@ -23,7 +23,7 @@ public class StudentControllerImpl implements IStudentControler{
 	@Override
 	public Student saveStudent(@RequestBody Student student) {
 		// Gelen JSON payload'ı doğrulamak için logla
-		//log.info("Incoming student payload: {}", student);
+		log.info("Incoming student payload: {}", student);
 		return studentService.saveStudent(student);
 	}
 
