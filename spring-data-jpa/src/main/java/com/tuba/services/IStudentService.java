@@ -1,9 +1,12 @@
 package com.tuba.services;
 
+import java.util.List;
+
 import com.tuba.entities.Student;
 
 public interface IStudentService {
 
 	public Student saveStudent(Student student);
+	public List<Student> getAllStudents();
 
 }
