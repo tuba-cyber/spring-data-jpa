@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,15 +16,14 @@ import com.tuba.services.IStudentService;
 
 import lombok.extern.slf4j.Slf4j;
 
-
 @RestController
 @RequestMapping("/rest/api/student")
 @Slf4j
-public class StudentControllerImpl implements IStudentControler{
+public class StudentControllerImpl implements IStudentControler {
 	@Autowired
 	private IStudentService studentService;
-	
-	@PostMapping(path="/save")
+
+	@PostMapping(path = "/save")
 	@Override
 	public Student saveStudent(@RequestBody Student student) {
 		// Gelen JSON payload'ı doğrulamak için logla
@@ -31,11 +31,16 @@ public class StudentControllerImpl implements IStudentControler{
 		return studentService.saveStudent(student);
 	}
 
-	@GetMapping(path="/list")
+	@GetMapping(path = "/list")
 	@Override
 	public List<Student> getAllStudents() {
 		return studentService.getAllStudents();
-		//dlkjfkfngkfdnm
+	}
+
+	@GetMapping(path = "/list/{id}")
+	@Override
+	public Student getStudentById(@PathVariable(name = "id") Integer id) {
+		return studentService.getStudentById(id);
 	}
 
 }
