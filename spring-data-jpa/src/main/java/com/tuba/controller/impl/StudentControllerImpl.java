@@ -17,6 +17,7 @@ import com.tuba.dto.DtoStudent;
 import com.tuba.dto.DtoStudentIU;
 import com.tuba.services.IStudentService;
 
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
@@ -28,7 +29,7 @@ public class StudentControllerImpl implements IStudentControler {
 
 	@PostMapping(path = "/save")
 	@Override
-	public DtoStudent saveStudent(@RequestBody DtoStudentIU dtoStudentIU) {
+	public DtoStudent saveStudent(@RequestBody @Valid DtoStudentIU dtoStudentIU) {
 		// Gelen JSON payload'ı doğrulamak için logla
 		log.info("Incoming student payload: {}", dtoStudentIU);
 		return studentService.saveStudent(dtoStudentIU);
