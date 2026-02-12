@@ -1,11 +1,15 @@
 package com.tuba.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tuba.dto.DtoStudent;
+import com.tuba.dto.DtoStudentIU;
 import com.tuba.entities.Student;
 import com.tuba.repository.StudentRepository;
 import com.tuba.services.IStudentService;
@@ -17,47 +21,74 @@ public class StudentServiceImpl implements IStudentService {
 	private StudentRepository studentRepository;
 
 	@Override
-	public Student saveStudent(Student student) {
-
-		return studentRepository.save(student);
+	public DtoStudent saveStudent(DtoStudentIU dtoStudentIU) { // Burada DtoStudentIU Insert ;Update için kullanılıyor
+															// DtoStudent ise getter ve setter olarak kullanılıyor.
+		DtoStudent response=new DtoStudent();
+		Student student= new Student();
+		BeanUtils.copyProperties(dtoStudentIU, student);
+		
+		Student dbStudent=studentRepository.save(student);
+		BeanUtils.copyProperties(dbStudent, response);
+		
+		return response;
 	}
 
 	@Override
-	public List<Student> getAllStudents() {
+	public List<DtoStudent> getAllStudents() {
+		List<DtoStudent> dtoList=new ArrayList<>();
 		List<Student> studentList = studentRepository.findAll();
-		return studentList;
+		
+		for(Student student : studentList) {
+			
+			DtoStudent dto=new DtoStudent();
+			BeanUtils.copyProperties(student, dto);
+			dtoList.add(dto);
+		}
+		return dtoList;
 		// return studentRepository.findAll();
 	}
 
 	@Override
-	public Student getStudentById(Integer id) {
+	public DtoStudent getStudentById(Integer id) {
 
+		DtoStudent dto=new DtoStudent();
 		Optional<Student> optional = studentRepository.findById(id);
 		if (optional.isPresent()) {// = if(!optional.isEmpty()) //id boş değilse
-			return optional.get();
+			Student dbStudent=optional.get();
+			BeanUtils.copyProperties(dbStudent,dto);
 		}
-		return null; // veriyi bulamazsa null dönecek sonra exception yazılacak
+		return dto; 
+		//return null;// veriyi bulamazsa null dönecek sonra exception yazılacak
 
 	}
 
 	@Override
 	public void deleteStudent(Integer id) {
-		Student dbStudent = getStudentById(id);
-		if(dbStudent!=null) {
-		studentRepository.delete(dbStudent);
+		Optional<Student> optional=studentRepository.findById(id);
+		if(optional.isPresent()) {
+		studentRepository.delete(optional.get());
 		}
 		
 	}
 
 	@Override
-	public Student updateStudent(Integer id, Student updateStudent) {
-		Student dbStudent=getStudentById(id);
-		if(dbStudent!=null)
+	public DtoStudent updateStudent(Integer id, DtoStudentIU dtoStudentIU) {
+		DtoStudent dto=new DtoStudent();
+		
+		Optional<Student> optional=studentRepository.findById(id);
+
+		if(optional.isPresent())
 		{
-			dbStudent.setFirstName(updateStudent.getFirstName());
-			dbStudent.setLastName(updateStudent.getLastName());
-			dbStudent.setBirthOfDay(updateStudent.getBirthOfDay());
-			return studentRepository.save(dbStudent);
+			Student dbStudent=optional.get();
+			dbStudent.setFirstName(dtoStudentIU.getFirstName());
+			dbStudent.setLastName(dtoStudentIU.getLastName());
+			dbStudent.setBirthOfDate(dtoStudentIU.getBirthOfDate());
+			
+			Student updatedStudent= studentRepository.save(dbStudent);
+			
+			BeanUtils.copyProperties(updatedStudent, dto);
+			return dto;
+			
 			
 		}
 		return null;

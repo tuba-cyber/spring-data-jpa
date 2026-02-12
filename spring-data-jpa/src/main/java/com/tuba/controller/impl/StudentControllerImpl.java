@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tuba.controller.IStudentControler;
-import com.tuba.entities.Student;
+import com.tuba.dto.DtoStudent;
+import com.tuba.dto.DtoStudentIU;
 import com.tuba.services.IStudentService;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,21 +28,21 @@ public class StudentControllerImpl implements IStudentControler {
 
 	@PostMapping(path = "/save")
 	@Override
-	public Student saveStudent(@RequestBody Student student) {
+	public DtoStudent saveStudent(@RequestBody DtoStudentIU dtoStudentIU) {
 		// Gelen JSON payload'ı doğrulamak için logla
-		log.info("Incoming student payload: {}", student);
-		return studentService.saveStudent(student);
+		log.info("Incoming student payload: {}", dtoStudentIU);
+		return studentService.saveStudent(dtoStudentIU);
 	}
 
 	@GetMapping(path = "/list")
 	@Override
-	public List<Student> getAllStudents() {
+	public List<DtoStudent> getAllStudents() {
 		return studentService.getAllStudents();
 	}
 
 	@GetMapping(path = "/list/{id}")
 	@Override
-	public Student getStudentById(@PathVariable(name = "id") Integer id) {
+	public DtoStudent getStudentById(@PathVariable(name = "id") Integer id) {
 		return studentService.getStudentById(id);
 	}
 
@@ -54,8 +55,8 @@ public class StudentControllerImpl implements IStudentControler {
 
 	@PutMapping(path = "/update/{id}")
 	@Override
-	public Student updateStudent(@PathVariable(name="id") Integer id,@RequestBody Student updateStudent) {
-		return studentService.updateStudent(id, updateStudent);
+	public DtoStudent updateStudent(@PathVariable(name="id") Integer id,@RequestBody DtoStudentIU dtoStudentIU) {
+		return studentService.updateStudent(id, dtoStudentIU);
 		
 	}
 

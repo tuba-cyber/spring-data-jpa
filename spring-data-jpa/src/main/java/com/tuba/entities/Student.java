@@ -36,5 +36,5 @@ public class Student {
     @JsonFormat(pattern = "yyyy-MM-dd")
     //@Temporal(TemporalType.DATE)
     @Column(name = "birth_of_date")
-    private Date birthOfDay;
+    private Date birthOfDate;
 }
